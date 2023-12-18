@@ -1,46 +1,20 @@
+// Set the date and time for the countdown
+const countdownDate = new Date("2024-05-31 23:59:59").getTime();
 
-/*-------About---------*/
+// Update the countdown every 1 second
+const countdownInterval = setInterval(function() {
+    const now = new Date().getTime();
+    const timeLeft = countdownDate - now;
 
-var tablinks = document.getElementsByClassName("tab-links");
-var tabcontents = document.getElementsByClassName("tab-contents");
+    if (timeLeft <= 0) {
+        clearInterval(countdownInterval);
+        document.getElementById("countdown").innerHTML = "Countdown expired!";
+    } else {
+        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-function opentab(tabname){
-    for(tablink of tablinks){
-        tablink.classList.remove("active-link");
-    }
-    for(tabcontent of tabcontents){
-        tabcontent.classList.remove("active-tab");
-    }
-    event.currentTarget.classList.add("active-link");
-    document.getElementById(tabname).classList.add("active-tab");
-}
-
-/*------------sidemenu---------------*/
-
-var sidemenu = document.getElementById("sidemenu");
-
-function openmenu(){
-    sidemenu.style.right = "0";
-}
-function closemenu(){
-    sidemenu.style.right = "-200px";
-}
-
-/*----------------contact-form------------------*/
-
-const scriptURL = 'https://script.google.com/macros/s/AKfycbwZFWT_qE9dDlc3JtT2jk5WBOKJcny__1DRXja1LMQ7e2tUy4UWpOXpzZaRXb2W0I99Zw/exec'
-  const form = document.forms['submit-to-google-sheet']
-  const msg = document.getElementById("msg")
-
-  form.addEventListener('submit', e => {
-    e.preventDefault()
-    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-      .then(response => {
-        msg.innerHTML = "Message sent successfully"
-        setTimeout(function(){
-            msg.innerHTML = ""
-        },5000)
-        form.reset()
-      })
-      .catch(error => console.error('Error!', error.message))
-  })
+                document.getElementById("countdown").innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            }
+        }, 1000); // 1000 milliseconds = 1 second
